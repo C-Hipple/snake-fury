@@ -79,7 +79,7 @@ writeUserInput :: EventQueue -> IO ()
 writeUserInput queue@(EventQueue userqueue _ _) = do
   c <- getKey
   case parseUserInput c of
-    Just dir -> tryWriteChan userqueue dir >> writeUserInput queue 
+    Just dir -> tryWriteChan userqueue dir >> writeUserInput queue
     Nothing  -> writeUserInput queue
 
 {- | Parse common arrow-like keys
@@ -87,7 +87,7 @@ writeUserInput queue@(EventQueue userqueue _ _) = do
 - hjkl are vim-like movements
 - wasd are common in games
 -}
-parseUserInput :: String -> Maybe Snake.Movement
+parseUserInput :: String -> Maybe snake.Movement
 
 parseUserInput "\ESC[A" = Just Snake.North
 parseUserInput "w" = Just Snake.North

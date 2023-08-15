@@ -1,4 +1,3 @@
-
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE BangPatterns #-}
 
@@ -6,7 +5,7 @@
 {-|
 This module defines the board. A board is an array of CellType elements indexed by a tuple of ints: the height and width.
 
-for example, The following array represents a 3 by 4 board (left top corner is (1,1); right bottom corner is (3,4)) with a snake at 
+for example, The following array represents a 3 by 4 board (left top corner is (1,1); right bottom corner is (3,4)) with a snake at
 (2, 2) and (2, 3) and an apple at (3,4)
 
 < ((1,1) : Empty), ((1,2) : Empty), ((1,3) : Empty),     ((1,2) : Empty)
@@ -53,23 +52,24 @@ data RenderState   = RenderState {board :: Board, gameOver :: Bool} deriving Sho
 emptyGrid :: BoardInfo -> Board
 emptyGrid = undefined
 
-{- 
-This is a test for emptyGrid. It should return 
+{-
+This is a test for emptyGrid. It should return
 array ((1,1),(2,2)) [((1,1),Empty),((1,2),Empty),((2,1),Empty),((2,2),Empty)]
 -}
 -- >>> emptyGrid (BoardInfo 2 2)
+-- Prelude.undefined
 
 
 -- | Given BoardInfo, initial point of snake and initial point of apple, builds a board
-buildInitialBoard 
+buildInitialBoard
   :: BoardInfo -- ^ Board size
   -> Point     -- ^ initial point of the snake
   -> Point     -- ^ initial Point of the apple
   -> RenderState
 buildInitialBoard = undefined
 
-{- 
-This is a test for buildInitialBoard. It should return 
+{-
+This is a test for buildInitialBoard. It should return
 RenderState {board = array ((1,1),(2,2)) [((1,1),SnakeHead),((1,2),Empty),((2,1),Empty),((2,2),Apple)], gameOver = False}
 -}
 -- >>> buildInitialBoard (BoardInfo 2 2) (1,1) (2,2)
@@ -96,7 +96,7 @@ RenderState {board = array ((1,1),(2,2)) [((1,1),SnakeHead),((1,2),Empty),((2,1)
 
 
 -- | Provisional Pretty printer
---   For each cell type choose a string to representing. 
+--   For each cell type choose a string to representing.
 --   a good option is
 --     Empty -> "- "
 --     Snake -> "0 "
