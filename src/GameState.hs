@@ -85,18 +85,27 @@ nextHead bi gs =
         then head_pos
         else advancePoint head_pos (movement gs)
 
+
 atWall :: Point -> Movement -> BoardInfo -> Bool
 atWall p mv bi =
   let target = advancePoint p mv
-   in fst target <= height bi && snd target <= width bi
+      i = fst target
+      j = snd target
+   in (i >= height bi || j >= width bi) || (i == 0 || j == 0)
 
-advancePoint :: Point -> Movement -> Point
-advancePoint p mv =
+advancePoint :: Point -> Movement -> BoardInfo -> Point
+advancePoint p mv bi =
   case mv of
-    North -> (fst p - 1, snd p) -- top left corner is 1,1
-    South -> (fst p + 1, snd p)
-    East -> (fst p, snd p + 1)
-    West -> (fst p, snd p - 1)
+    North -> (determineWrap $ fst p - 1 (height bi), snd p) -- top left corner is 1,1
+    South -> (determineWrap $ fst p + 1 (height bi), snd p)
+    East -> (fst p, determineWrap snd p + 1 (width bi))
+    West -> (fst p, determineWrap snd p - 1 (width bi), a)
+
+determineWrap :: Int -> Int -> Int
+determineWrap coord max =
+  if coord == 0 then max
+  else if coord == max + 1
+  then 1
 
 {-
 This is a test for nextHead. It should return
@@ -110,9 +119,22 @@ True
 -- >>> game_state1 = GameState snake_seq apple_pos West (System.Random.mkStdGen 1)
 -- >>> game_state2 = GameState snake_seq apple_pos South (System.Random.mkStdGen 1)
 -- >>> game_state3 = GameState snake_seq apple_pos North (System.Random.mkStdGen 1)
--- >>> nextHead board_info game_state1 == (1,4)
--- >>> nextHead board_info game_state2 == (2,1)
--- >>> nextHead board_info game_state3 == (4,1)
+-- >>> snake_head = snakeHead snake_seq
+-- >>> snake_head
+-- >>> mvmt = West
+-- >>> advancePoint snake_head mvmt
+-- >>> atWall snake_head mvmt board_info
+-- >>> nextHead board_info game_state1
+-- >>> nextHead board_info game_state1 -- == (1,4)
+-- >>> nextHead board_info game_state2 -- == (2,1)
+-- >>> nextHead board_info game_state3 -- == (4,1)
+-- (1,1)
+-- (1,0)
+-- True
+-- (1,1)
+-- (1,1)
+-- (2,1)
+-- (1,1)
 
 -- | Calculates a new random apple, avoiding creating the apple in the same place, or in the snake body
 newApple :: BoardInfo -> GameState -> (Point, StdGen)
